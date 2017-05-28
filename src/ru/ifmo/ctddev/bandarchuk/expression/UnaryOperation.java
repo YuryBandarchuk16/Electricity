@@ -26,6 +26,13 @@ public abstract class UnaryOperation implements Operand {
         return operation(firstOperand.evaluate(x, y, z));
     }
 
+    @Override
+    public Operand diff(String name) {
+        return diffOp(firstOperand, firstOperand.diff(name));
+    }
+
+    protected abstract Operand diffOp(Operand first, Operand leftDiff);
+
     protected abstract double operation(double firstValue);
 
     protected abstract int operation(int firstValue) throws OverflowException;
