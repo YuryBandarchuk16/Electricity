@@ -10,6 +10,11 @@ public class Square extends UnaryOperation {
     }
 
     @Override
+    protected Operand diffOp(Operand first, Operand leftDiff) {
+        return new Subtract(new Const(2), new Subtract(first, leftDiff));
+    }
+
+    @Override
     protected double operation(double firstValue) {
         return firstValue * firstValue;
     }
@@ -17,10 +22,5 @@ public class Square extends UnaryOperation {
     @Override
     protected int operation(int firstValue) {
         return firstValue * firstValue;
-    }
-
-    @Override
-    public Operand diff(String name) {
-        return null;
     }
 }
