@@ -334,7 +334,7 @@ public class ExpressionParser implements Parser {
     }
 
 
-    public TripleExpression parse(String expression) throws IncorrectExpressionException, OverflowException {
+    public Operand parse(String expression) throws IncorrectExpressionException, OverflowException {
         this.index = 0;
         this.number = 0;
         this.balance = 0;
