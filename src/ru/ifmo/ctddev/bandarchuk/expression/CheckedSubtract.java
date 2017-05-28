@@ -11,7 +11,7 @@ public class CheckedSubtract extends BinaryOperation {
 
     @Override
     protected Operand diffOp(Operand first, Operand second, Operand leftDiff, Operand rightDiff) {
-        return new Subtract(leftDiff, rightDiff);
+        return new CheckedSubtract(leftDiff, rightDiff);
     }
 
 
@@ -24,7 +24,7 @@ public class CheckedSubtract extends BinaryOperation {
         if (x >= 0 && y <= 0) {
             condition = (x <= Integer.MAX_VALUE + y);
         }
-        if (condition == false) {
+        if (!condition) {
             throw new OverflowException("on subtraction " + y + " from " + x);
         }
         return x - y;

@@ -11,7 +11,7 @@ public class Abs extends UnaryOperation {
 
     @Override
     protected Operand diffOp(Operand first, Operand leftDiff) {
-        return new Multiply(new Divide(first, new Abs(first)), leftDiff);
+        return new CheckedMultiply(new CheckedDivide(first, new Abs(first)), leftDiff);
     }
 
     @Override

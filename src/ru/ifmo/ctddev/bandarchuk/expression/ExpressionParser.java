@@ -287,7 +287,14 @@ public class ExpressionParser implements Parser {
                 result = new Sqrt(getNextFactor());
                 break;
             case SIN:
-                //
+                result = new Sin(getNextFactor());
+                break;
+            case COS:
+                result = new Cos(getNextFactor());
+                break;
+            case TAN:
+                result = new Tan(getNextFactor());
+                break;
             default:
                 throw new IncorrectExpressionException("no unary operation found in this part of expression: '" + expression.substring(wasIndex, index + 1) + "' at index " + index);
         }

@@ -13,7 +13,7 @@ public class Sqrt extends UnaryOperation {
 
     @Override
     protected Operand diffOp(Operand first, Operand leftDiff) {
-        return new Divide(leftDiff, new Multiply(Const.TWO, first));
+        return new CheckedDivide(leftDiff, new CheckedMultiply(Const.TWO, first));
     }
 
     @Override

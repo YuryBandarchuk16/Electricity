@@ -1,17 +1,17 @@
 package ru.ifmo.ctddev.bandarchuk.expression;
 
 /**
- * Created by YuryBandarchuk on 5/28/17.
+ * Created by Viktoria on 5/28/17.
  */
-public class Cos extends UnaryOperation {
+public class Tan extends UnaryOperation {
 
-    public Cos(Operand firstOperand) {
+    public Tan(Operand firstOperand) {
         super(firstOperand);
     }
 
     @Override
     protected double operation(double firstValue) {
-        return Math.cos(firstValue);
+        return Math.tan(firstValue);
     }
 
     @Override
@@ -21,6 +21,6 @@ public class Cos extends UnaryOperation {
 
     @Override
     protected Operand diffOp(Operand first, Operand leftDiff) {
-        return new CheckedMultiply(new CheckedNegate(new Sin(first)), leftDiff);
+        return new CheckedDivide(leftDiff, new Square(new Cos(first)));
     }
 }

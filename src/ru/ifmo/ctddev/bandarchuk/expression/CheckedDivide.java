@@ -10,6 +10,11 @@ public class CheckedDivide extends BinaryOperation {
     }
 
     @Override
+    protected Operand diffOp(Operand first, Operand second, Operand leftDiff, Operand rightDiff) {
+        return new CheckedDivide(new CheckedSubtract(new CheckedMultiply(second, leftDiff), new CheckedMultiply(first, rightDiff)), new Square(second));
+    }
+
+    @Override
     public int operation(int x, int y) throws DivisionByZeroException, OverflowException {
         if (y == 0) {
             throw new DivisionByZeroException(x + " was tried to divide by " + y);

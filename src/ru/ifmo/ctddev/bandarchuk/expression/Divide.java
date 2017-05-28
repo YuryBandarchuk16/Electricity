@@ -11,7 +11,7 @@ public class Divide extends BinaryOperation {
 
     @Override
     protected Operand diffOp(Operand first, Operand second, Operand leftDiff, Operand rightDiff) {
-        return new Divide(new Subtract(new Multiply(second, leftDiff), new Multiply(first, rightDiff)), new Square(second));
+        return new CheckedDivide(new CheckedSubtract(new CheckedMultiply(second, leftDiff), new CheckedMultiply(first, rightDiff)), new Square(second));
     }
 
     @Override

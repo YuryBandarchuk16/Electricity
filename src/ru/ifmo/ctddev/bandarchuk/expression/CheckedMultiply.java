@@ -9,6 +9,11 @@ public class CheckedMultiply extends BinaryOperation {
         super(firstOperand, secondOperand);
     }
 
+    @Override
+    protected Operand diffOp(Operand first, Operand second, Operand leftDiff, Operand rightDiff) {
+        return new CheckedAdd(new CheckedMultiply(first, rightDiff), new CheckedMultiply(second, leftDiff));
+    }
+
 
     @Override
     public int operation(int x, int y) throws OverflowException {
