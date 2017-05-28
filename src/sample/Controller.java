@@ -7,5 +7,7 @@ public class Controller {
     }
 
     public void clicked3DMode(ActionEvent actionEvent) {
+        Main.runMode3D();
+        Main.close();
     }
 }

@@ -7,18 +7,18 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-public class Main extends Application {
+public class Mode3DWindow extends Application {
 
     private static Stage primaryStage;
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
-        primaryStage.setTitle("Electricity");
+        Parent root = FXMLLoader.load(getClass().getResource("thirdmode.fxml"));
+        primaryStage.setTitle("3D Mode");
         primaryStage.setScene(new Scene(root, 600, 400));
         primaryStage.show();
         primaryStage.setOnCloseRequest(e -> Platform.exit());
-        Main.primaryStage = primaryStage;
+        Mode3DWindow.primaryStage = primaryStage;
     }
 
 
@@ -30,14 +30,4 @@ public class Main extends Application {
         primaryStage.close();
     }
 
-    public static void runMode3D() {
-        Platform.runLater(() -> {
-            try {
-                new Mode3DWindow().start(new Stage());
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        });
-        close();
-    }
 }
