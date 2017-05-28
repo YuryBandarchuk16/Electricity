@@ -3,15 +3,15 @@ package ru.ifmo.ctddev.bandarchuk.expression;
 /**
  * Created by YuryBandarchuk on 5/28/17.
  */
-public class Sin extends UnaryOperation {
+public class Cos extends UnaryOperation {
 
-    public Sin(Operand firstOperand) {
+    public Cos(Operand firstOperand) {
         super(firstOperand);
     }
 
     @Override
     protected double operation(double firstValue) {
-        return Math.sin(firstValue);
+        return Math.cos(firstValue);
     }
 
     @Override
