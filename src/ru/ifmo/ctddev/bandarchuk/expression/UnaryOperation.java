@@ -22,7 +22,7 @@ public abstract class UnaryOperation implements Operand {
     }
 
     @Override
-    public int evaluate(int x, int y, int z) throws OverflowException, DivisionByZeroException {
+    public double evaluate(double x, double y, double z) throws OverflowException, DivisionByZeroException {
         return operation(firstOperand.evaluate(x, y, z));
     }
 

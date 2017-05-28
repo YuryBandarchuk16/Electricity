@@ -11,7 +11,7 @@ public class CheckedNegate extends UnaryOperation {
 
     @Override
     protected double operation(double firstValue) {
-        return 0;
+        return -firstValue;
     }
 
     @Override
