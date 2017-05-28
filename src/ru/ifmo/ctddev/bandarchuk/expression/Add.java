@@ -10,6 +10,11 @@ public class Add extends BinaryOperation {
     }
 
     @Override
+    protected Operand diffOp(Operand first, Operand second, Operand leftDiff, Operand rightDiff) {
+        return new Add(leftDiff, rightDiff);
+    }
+
+    @Override
     public int operation(int x, int y) {
         return x + y;
     }

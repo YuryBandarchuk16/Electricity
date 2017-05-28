@@ -27,6 +27,14 @@ public abstract class BinaryOperation implements Operand {
         return operation(firstOperand.evaluate(x, y, z), secondOperand.evaluate(x, y, z));
     }
 
+    @Override
+    public Operand diff(String name) {
+        return diffOp(firstOperand, secondOperand, firstOperand.diff(name), secondOperand.diff(name));
+    }
+
+    protected abstract Operand diffOp(Operand first, Operand second,
+                                               Operand leftDiff, Operand rightDiff);
+
     protected abstract double operation(double firstValue, double secondValue);
 
     protected abstract int operation(int firstValue, int secondValue) throws OverflowException, DivisionByZeroException;
