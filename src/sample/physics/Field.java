@@ -8,8 +8,7 @@ import ru.ifmo.ctddev.bandarchuk.expression.*;
  */
 public class Field {
 
-    private Operand expression;
-    private ExpressionParser expressionParser;
+    private Operand parsedExpression;
 
     private Operand diffX;
     private Operand diffY;
@@ -17,19 +16,19 @@ public class Field {
 
 
     public Field(String expression) throws OverflowException, IncorrectExpressionException {
-        this.expressionParser = new ExpressionParser();
-        this.expression = this.expressionParser.parse(expression);
-        this.diffX = this.expression.diff("x");
-        this.diffY = this.expression.diff("y");
-        this.diffZ = this.expression.diff("z");
+        ExpressionParser expressionParser = new ExpressionParser();
+        parsedExpression = expressionParser.parse(expression);
+        diffX = parsedExpression.diff("x");
+        diffY = parsedExpression.diff("y");
+        diffZ = parsedExpression.diff("z");
     }
 
     public double getPhiAt(double x, double y, double z) throws OverflowException, DivisionByZeroException {
-        return this.expression.evaluate(x, y, z);
+        return parsedExpression.evaluate(x, y, z);
     }
 
-    private double getVectorLength(double xComponent, double yComponent, double zComponent) {
-        return Math.sqrt(xComponent * xComponent + yComponent * yComponent + zComponent * zComponent);
+    private double getVectorLength(double x, double y, double z) {
+        return Math.sqrt(x * x + y * y + z * z);
     }
 
     public double getEAt(double x, double y, double z) throws OverflowException, DivisionByZeroException {

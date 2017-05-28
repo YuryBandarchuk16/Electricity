@@ -29,15 +29,4 @@ public class Main extends Application {
     public static void close() {
         primaryStage.close();
     }
-
-    public static void runMode3D() {
-        Platform.runLater(() -> {
-            try {
-                new Mode3DWindow().start(new Stage());
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        });
-        close();
-    }
 }
