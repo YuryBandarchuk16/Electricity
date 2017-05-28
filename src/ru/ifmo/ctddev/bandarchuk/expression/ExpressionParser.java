@@ -17,7 +17,7 @@ public class ExpressionParser implements Parser {
 
     private EnumSet<State> binaryOperations = EnumSet.of(State.MIN, State.MAX, State.BINARY_AND, State.BINARY_OR, State.BINARY_XOR, State.DIVIDE_SIGN,
                             State.MINUS_SIGN, State.PLUS_SIGN, State.TIMES_SIGN, State.SHIFT_LEFT, State.SHIFT_RIGHT);
-    private EnumSet<State> unaryOperations = EnumSet.of(State.MINUS_SIGN, State.ABS, State.SQUARE, State.SQRT);
+    private EnumSet<State> unaryOperations = EnumSet.of(State.MINUS_SIGN, State.ABS, State.SQUARE, State.SQRT, State.SIN, State.COS, State.TAN);
     private EnumSet<State> operands = EnumSet.of(State.CONSTANT, State.VARIABLE, State.RIGHT_BRACKET);
 
 
@@ -190,6 +190,13 @@ public class ExpressionParser implements Parser {
                     state = State.CONSTANT;
                     break;
                 }
+                if (currentChar == 't') {
+                    if (index + 2 < expression.length() && expression.substring(index, index + 3).equals("tan")) {
+                        state = state.TAN;
+                        index += 3;
+                        break;
+                    }
+                }
                 if (currentChar == 'a') {
                     if (index + 2 < expression.length() && expression.substring(index, index + 3).equals("abs")) {
                         state = State.ABS;
@@ -203,6 +210,16 @@ public class ExpressionParser implements Parser {
                         state = State.SQUARE;
                         index += 6;
                         checkAfter(index - 3);
+                        break;
+                    }
+                    if (index + 2 < expression.length() && expression.substring(index, index + 3).equals("sin")) {
+                        state = State.SIN;
+                        index += 3;
+                        break;
+                    }
+                    if (index + 2 < expression.length() && expression.substring(index, index + 3).equals("cos")) {
+                        state = State.COS;
+                        index += 3;
                         break;
                     }
                     if (index + 4 < expression.length() && expression.substring(index, index + 4).equals("sqrt")) {
@@ -269,6 +286,8 @@ public class ExpressionParser implements Parser {
             case SQRT:
                 result = new Sqrt(getNextFactor());
                 break;
+            case SIN:
+                //
             default:
                 throw new IncorrectExpressionException("no unary operation found in this part of expression: '" + expression.substring(wasIndex, index + 1) + "' at index " + index);
         }

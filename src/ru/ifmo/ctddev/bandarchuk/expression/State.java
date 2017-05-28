@@ -22,5 +22,8 @@ public enum State {
     MIN,
     MAX,
     SQRT,
-    NONE
+    NONE,
+    SIN,
+    COS,
+    TAN
 }
