@@ -197,6 +197,13 @@ public class ExpressionParser implements Parser {
                         break;
                     }
                 }
+                if (currentChar == 'c') {
+                    if (index + 2 < expression.length() && expression.substring(index, index + 3).equals("cos")) {
+                        state = State.COS;
+                        index += 3;
+                        break;
+                    }
+                }
                 if (currentChar == 'a') {
                     if (index + 2 < expression.length() && expression.substring(index, index + 3).equals("abs")) {
                         state = State.ABS;
@@ -214,11 +221,6 @@ public class ExpressionParser implements Parser {
                     }
                     if (index + 2 < expression.length() && expression.substring(index, index + 3).equals("sin")) {
                         state = State.SIN;
-                        index += 3;
-                        break;
-                    }
-                    if (index + 2 < expression.length() && expression.substring(index, index + 3).equals("cos")) {
-                        state = State.COS;
                         index += 3;
                         break;
                     }

@@ -23,7 +23,7 @@ public class Controller {
     }
 
     public void clicked3DMode(ActionEvent actionEvent) throws OverflowException, IncorrectExpressionException {
-        decimalFormat = new DecimalFormat("#.000");
+        decimalFormat = new DecimalFormat("#0.000");
         field = new Field(expressionField.getText());
         Platform.runLater(() -> {
             try {
