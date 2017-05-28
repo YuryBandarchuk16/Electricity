@@ -18,4 +18,9 @@ public class Square extends UnaryOperation {
     protected int operation(int firstValue) {
         return firstValue * firstValue;
     }
+
+    @Override
+    public Operand diff(String name) {
+        return null;
+    }
 }

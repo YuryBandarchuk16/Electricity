@@ -35,4 +35,13 @@ public class Variable implements Operand {
                 return 0;
         }
     }
+
+    @Override
+    public Operand diff(String name) {
+        if (variableName.equals(name)) {
+            return new Const(1);
+        } else {
+            return new Const(0);
+        }
+    }
 }
