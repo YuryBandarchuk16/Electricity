@@ -12,6 +12,11 @@ public class Sqrt extends UnaryOperation {
     }
 
     @Override
+    protected Operand diffOp(Operand first, Operand leftDiff) {
+        return new Divide(leftDiff, new Multiply(Const.TWO, first));
+    }
+
+    @Override
     protected double operation(double firstValue) {
         return firstValue;
     }

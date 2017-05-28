@@ -19,9 +19,8 @@ public class Sin extends UnaryOperation {
         return 0;
     }
 
-
     @Override
-    public Operand diff(String name) {
-        return null;
+    protected Operand diffOp(Operand first, Operand leftDiff) {
+        return new Multiply(new Sin(first), leftDiff);
     }
 }

@@ -10,6 +10,11 @@ public class Divide extends BinaryOperation {
     }
 
     @Override
+    protected Operand diffOp(Operand first, Operand second, Operand leftDiff, Operand rightDiff) {
+        return new Divide(new Subtract(new Multiply(second, leftDiff), new Multiply(first, rightDiff)), new Square(second));
+    }
+
+    @Override
     public int operation(int x, int y) {
         return x / y;
     }

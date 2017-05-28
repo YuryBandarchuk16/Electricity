@@ -10,6 +10,11 @@ public class CheckedAdd extends BinaryOperation {
     }
 
     @Override
+    protected Operand diffOp(Operand first, Operand second, Operand leftDiff, Operand rightDiff) {
+        return new CheckedAdd(leftDiff, rightDiff);
+    }
+
+    @Override
     public int operation(int x, int y) throws OverflowException {
         boolean condition = true;
         if (x >= 0 && y >= 0) {
@@ -17,7 +22,7 @@ public class CheckedAdd extends BinaryOperation {
         } else if (x <= 0 && y <= 0) {
             condition = (x >= Integer.MIN_VALUE - y);
         }
-        if (condition == false) {
+        if (!condition) {
             throw new OverflowException("on adding " + x + " and " + y);
         }
         return x + y;

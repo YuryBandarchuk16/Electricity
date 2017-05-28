@@ -9,6 +9,10 @@ public class Multiply extends BinaryOperation {
         super(firstOperand, secondOperand);
     }
 
+    @Override
+    protected Operand diffOp(Operand first, Operand second, Operand leftDiff, Operand rightDiff) {
+        return new Add(new Multiply(first, rightDiff), new Multiply(second, leftDiff));
+    }
 
     @Override
     public int operation(int x, int y) {

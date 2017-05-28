@@ -10,6 +10,11 @@ public class CheckedNegate extends UnaryOperation {
     }
 
     @Override
+    protected Operand diffOp(Operand first, Operand leftDiff) {
+        return new CheckedNegate(leftDiff);
+    }
+
+    @Override
     protected double operation(double firstValue) {
         return -firstValue;
     }

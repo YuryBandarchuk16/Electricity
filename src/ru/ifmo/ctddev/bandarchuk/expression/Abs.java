@@ -10,6 +10,11 @@ public class Abs extends UnaryOperation {
     }
 
     @Override
+    protected Operand diffOp(Operand first, Operand leftDiff) {
+        return new Multiply(new Divide(first, new Abs(first)), leftDiff);
+    }
+
+    @Override
     protected double operation(double firstValue) {
         return Math.abs(firstValue);
     }

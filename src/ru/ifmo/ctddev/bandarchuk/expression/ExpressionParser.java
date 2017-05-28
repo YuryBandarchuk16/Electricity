@@ -265,7 +265,7 @@ public class ExpressionParser implements Parser {
                 updateState();
                 break;
             case LEFT_BRACKET:
-                result = minMax();
+                result = parseTerms();
                 if (state != State.RIGHT_BRACKET) {
                     throw new IncorrectExpressionException("wrong bracket sequence: closing bracket expected at index " + index  + getPrint(index));
                 }
@@ -327,89 +327,12 @@ public class ExpressionParser implements Parser {
     }
 
 
-    private Operand parseBitwiseAnd() throws IncorrectExpressionException, OverflowException {
-        Operand leftOperand = parseTerms();
-        while (true) {
-            switch (state) {
-                case BINARY_AND:
-                    leftOperand = new BinaryAnd(leftOperand, parseTerms());
-                    break;
-                default:
-                    return leftOperand;
-            }
-        }
-    }
-
-    private Operand parseBitwiseXor() throws IncorrectExpressionException, OverflowException {
-        Operand leftOperand = parseBitwiseAnd();
-        while (true) {
-            switch (state) {
-                case BINARY_XOR:
-                    leftOperand = new BinaryXor(leftOperand, parseBitwiseAnd());
-                    break;
-                default:
-                    return leftOperand;
-            }
-        }
-    }
-
-
-    private Operand parseBitwiseOr() throws IncorrectExpressionException, OverflowException {
-        Operand leftOperand = parseBitwiseXor();
-        while (true) {
-            switch (state) {
-                case BINARY_OR:
-                    leftOperand = new BinaryOr(leftOperand, parseBitwiseXor());
-                    break;
-                default:
-                    return leftOperand;
-            }
-        }
-    }
-
-    private Operand parseBitwise() throws IncorrectExpressionException, OverflowException {
-        return parseBitwiseOr();
-    }
-
-    private Operand parse() throws IncorrectExpressionException, OverflowException {
-        Operand currentValue = parseBitwise();
-        while (true) {
-            switch (state) {
-                case SHIFT_LEFT:
-                    currentValue = new ShiftLeft(currentValue, parseBitwise());
-                    break;
-                case SHIFT_RIGHT:
-                    currentValue = new ShiftRight(currentValue, parseBitwise());
-                    break;
-                default:
-                    return currentValue;
-            }
-        }
-    }
-
-    private Operand minMax() throws IncorrectExpressionException, OverflowException {
-        Operand currentValue = parse();
-        while (true) {
-            switch (state) {
-                case MIN:
-                    currentValue = new Min(currentValue, parse());
-                    break;
-                case MAX:
-                    currentValue = new Max(currentValue, parse());
-                    break;
-                default:
-                    return currentValue;
-            }
-        }
-    }
-
-
     public TripleExpression parse(String expression) throws IncorrectExpressionException, OverflowException {
         this.index = 0;
         this.number = 0;
         this.balance = 0;
         this.state = State.NONE;
         this.expression = expression;
-        return minMax();
+        return parseTerms();
     }
 }
