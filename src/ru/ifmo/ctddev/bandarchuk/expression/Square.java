@@ -11,7 +11,7 @@ public class Square extends UnaryOperation {
 
     @Override
     protected Operand diffOp(Operand first, Operand leftDiff) {
-        return new Subtract(new Const(2), new Subtract(first, leftDiff));
+        return new CheckedSubtract(Const.TWO, new CheckedSubtract(first, leftDiff));
     }
 
     @Override
