@@ -21,6 +21,6 @@ public class Sin extends UnaryOperation {
 
     @Override
     protected Operand diffOp(Operand first, Operand leftDiff) {
-        return new CheckedMultiply(new Sin(first), leftDiff);
+        return new CheckedMultiply(new Cos(first), leftDiff);
     }
 }
