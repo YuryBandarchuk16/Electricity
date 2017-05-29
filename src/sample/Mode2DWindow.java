@@ -1,27 +1,42 @@
 package sample;
 
 import javax.swing.*;
-import java.awt.*;
-import java.awt.geom.Line2D;
 
 /**
  * Created by YuryBandarchuk on 5/28/17.
  */
-public class Mode2DWindow extends JFrame {
+public class Mode2DWindow extends JFrame implements Runnable {
+
+    private JPanel panel;
 
     public Mode2DWindow(){
-        JPanel panel=new JPanel();
-        getContentPane().add(panel);
-        setSize(450,450);
+        panel = new JPanel();
+        setTitle("2D Mode");
+        setBounds(300, 500, 600, 400);
+        setResizable(false);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setLayout(null);
+        panel.setLayout(null);
+        setFocusable(true);
 
-        JButton button =new JButton("press");
-        panel.add(button);
     }
 
-    public void paint(Graphics g) {
-        super.paint(g);  // fixes the immediate problem.
-        Graphics2D g2 = (Graphics2D) g;
-        Line2D lin = new Line2D.Float(100, 100, 250, 260);
-        g2.draw(lin);
+    public void start() throws InterruptedException {
+        getContentPane().add(panel);
+        setVisible(true);
+    }
+
+    public void close() {
+        setVisible(false);
+        dispose();
+    }
+
+    @Override
+    public void run() {
+        try {
+            start();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 }

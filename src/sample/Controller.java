@@ -20,9 +20,10 @@ public class Controller {
     public static DecimalFormat decimalFormat;
 
     public void clicked2DMode(ActionEvent actionEvent) {
-        Mode2DWindow mode2DWindow = new Mode2DWindow();
-        mode2DWindow.setVisible(true);
         Main.close();
+        Mode2DWindow mode2DWindow = new Mode2DWindow();
+        Thread thread = new Thread(mode2DWindow);
+        thread.start();
     }
 
     public void clicked3DMode(ActionEvent actionEvent) throws OverflowException, IncorrectExpressionException {
