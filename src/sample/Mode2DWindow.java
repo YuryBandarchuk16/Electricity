@@ -17,6 +17,7 @@ import java.awt.geom.Ellipse2D;
 public class Mode2DWindow extends JFrame implements Runnable {
 
     private sample.Type currentMode;
+    private sample.Type previousType;
 
     private JPanel panel;
     private Graphics2D graphics;
@@ -42,6 +43,8 @@ public class Mode2DWindow extends JFrame implements Runnable {
                 if (e.getKeyCode() == KeyEvent.VK_SPACE) {
                     switchMode();
                     repaintAfterModeUpdate();
+                } else if (e.getKeyCode() == KeyEvent.VK_BACK_SPACE) {
+                    close();
                 }
             }
 
@@ -62,7 +65,11 @@ public class Mode2DWindow extends JFrame implements Runnable {
                     e1.printStackTrace();
                 }
                 String valueName = "напряженности";
-                if (currentMode == sample.Type.PHI_FIELD) {
+                sample.Type decisionState = currentMode;
+                if (currentMode == sample.Type.BLUE_COLOR) {
+                    decisionState = previousType;
+                }
+                if (decisionState == sample.Type.PHI_FIELD) {
                     valueName = "потенциала";
                 }
                 JOptionPane.showMessageDialog(null, "Значение " + valueName + " в выбранной вами точке = " + value);
@@ -92,9 +99,6 @@ public class Mode2DWindow extends JFrame implements Runnable {
 
 
     private final double radius = 1.5;
-    private final double halfRadius = radius / 2.0;
-    private final float borderAlpha = 0.2f;
-    private final int halfValueOfBrokenAlpha = (int)(600.0 * 400.0 / (2.0 * radius * radius)) + 5;
     private int counter = 0;
 
     private void resetCounter() {
@@ -102,12 +106,15 @@ public class Mode2DWindow extends JFrame implements Runnable {
     }
 
     private void ensureCounter() {
+        double fillingCoeff = 1.23579;
+        int halfValueOfBrokenAlpha = (int) (600.0 * 400.0 / (fillingCoeff * radius * radius)) + 5;
         if (counter > halfValueOfBrokenAlpha) {
-            JOptionPane.showMessageDialog(null, "Большинство значений рассчитываемой величины слишком малы, нарисуем обратный график");
-            sample.Type wasType = currentMode;
-            currentMode = sample.Type.BLUE_COLOR;
-            paint(this.getGraphics());
-            currentMode = wasType;
+            if (JOptionPane.showConfirmDialog(null, "Большинство значений рассчитываемой величины слишком малы, нарисуем обратный график", "Сделайте выбор", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+                this.previousType = currentMode;
+                currentMode = sample.Type.BLUE_COLOR;
+                paint(this.getGraphics());
+                currentMode = this.previousType;
+            }
         }
     }
 
@@ -115,7 +122,11 @@ public class Mode2DWindow extends JFrame implements Runnable {
         alpha = Math.abs(alpha);
         alpha = Math.min(alpha, 1.0f);
         alpha = Math.max(alpha, 0.0f);
+        if (currentMode == sample.Type.BLUE_COLOR) {
+            alpha = 1.0f - alpha;
+        }
         int type = AlphaComposite.SRC_OVER;
+        float borderAlpha = 0.2f;
         if (alpha < borderAlpha) {
             ++counter;
         }
@@ -124,7 +135,11 @@ public class Mode2DWindow extends JFrame implements Runnable {
 
     private double getValue(double x, double y, double z) throws OverflowException, DivisionByZeroException {
         double value = 0.0;
-        switch (currentMode) {
+        sample.Type decisionState = currentMode;
+        if (currentMode == sample.Type.BLUE_COLOR) {
+            decisionState = previousType;
+        }
+        switch (decisionState) {
             case E_FIELD:
                 value = Controller.field.getEAt(x, y, z);
                 break;
@@ -156,8 +171,8 @@ public class Mode2DWindow extends JFrame implements Runnable {
         super.paint(g);
         this.graphics = (Graphics2D) g;
         double maxValue = 0;
-        for (double x = 0.1; x <= 600.0; x += radius) {
-            for (double y = 0.1; y <= 399.9; y += radius) {
+        for (double x = 1; x <= 600.0; x += radius) {
+            for (double y = 1; y <= 399.9; y += radius) {
                 double value = 0;
                 try {
                     value = getValue(x, y, 0.0);
@@ -172,18 +187,19 @@ public class Mode2DWindow extends JFrame implements Runnable {
             maxValue = 1.0;
             add = maxValue;
         }
-        for (double px = 0.1; px <= 600.0; px += radius) {
-            for (double py = 0.1; py <= 399.9; py += radius) {
+        for (double px = 1; px <= 600.0; px += radius) {
+            for (double py = 1; py <= 399.9; py += radius) {
                 try {
                     double y = 400.0 - py;
                     double value = getValue(px, y, 0.0) + add;
-                    this.graphics.setComposite(makeComposite((float)(Math.abs(value) / maxValue)));
+                    this.graphics.setComposite(makeComposite((float)(Math.abs(value) / Math.max(Math.pow(maxValue, 2.0 / 3.0), 1.0))));
                     this.graphics.setColor(Color.RED);
                     if (currentMode == sample.Type.PHI_FIELD) {
                         this.graphics.setColor(Color.GREEN);
                     } else if (currentMode == sample.Type.BLUE_COLOR) {
                         this.graphics.setColor(Color.BLUE);
                     }
+                    double halfRadius = radius / 2.0;
                     Ellipse2D.Double ellipse2D = new Ellipse2D.Double(px - halfRadius, y - halfRadius, radius, radius);
                     this.graphics.fill(ellipse2D);
                 } catch (Exception e1) {
