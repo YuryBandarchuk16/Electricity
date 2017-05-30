@@ -19,16 +19,20 @@ public class Controller {
     public static Field field;
     public static DecimalFormat decimalFormat;
 
-    public void clicked2DMode(ActionEvent actionEvent) {
-        Main.close();
+    private void initField() throws OverflowException, IncorrectExpressionException {
+        decimalFormat = new DecimalFormat("#0.000");
+        field = new Field(expressionField.getText());
+    }
+
+    public void clicked2DMode(ActionEvent actionEvent) throws OverflowException, IncorrectExpressionException {
+        initField();
         Mode2DWindow mode2DWindow = new Mode2DWindow();
         Thread thread = new Thread(mode2DWindow);
         thread.start();
     }
 
     public void clicked3DMode(ActionEvent actionEvent) throws OverflowException, IncorrectExpressionException {
-        decimalFormat = new DecimalFormat("#0.000");
-        field = new Field(expressionField.getText());
+        initField();
         Platform.runLater(() -> {
             try {
                 new Mode3DWindow().start(new Stage());
